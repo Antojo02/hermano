@@ -32,15 +32,16 @@
             perspective: 1000px;
         }
 
-        /* Contenedor principal adaptable */
+        /* Contenedor principal centrado */
         .container {
             position: relative;
             width: 90%;
-            max-width: 420px;
-            height: 280px;
+            max-width: 400px;
+            height: 240px;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* El sobre */
@@ -62,10 +63,9 @@
             position: relative;
             width: 100%;
             height: 100%;
-            overflow: visible;
         }
 
-        /* Solapa superior (Triángulo superior) */
+        /* Solapa superior */
         .envelope::before {
             content: '';
             position: absolute;
@@ -75,15 +75,15 @@
             height: 0;
             border-left: 45vw solid transparent;
             border-right: 45vw solid transparent;
-            border-top: 140px solid var(--envelope-color);
+            border-top: 120px solid var(--envelope-color);
             transform-origin: top;
-            transition: transform 0.4s ease-in-out 0.2s, z-index 0s 0.4s;
+            transition: transform 0.4s ease-in-out 0.15s, z-index 0s 0.35s;
             z-index: 3;
         }
-        @media (min-width: 467px) {
+        @media (min-width: 440px) {
             .envelope::before {
-                border-left: 210px solid transparent;
-                border-right: 210px solid transparent;
+                border-left: 200px solid transparent;
+                border-right: 200px solid transparent;
             }
         }
 
@@ -97,13 +97,13 @@
             height: 0;
             border-left: 45vw solid transparent;
             border-right: 45vw solid transparent;
-            border-bottom: 140px solid var(--envelope-color);
+            border-bottom: 120px solid var(--envelope-color);
             z-index: 2;
         }
-        @media (min-width: 467px) {
+        @media (min-width: 440px) {
             .envelope::after {
-                border-left: 210px solid transparent;
-                border-right: 210px solid transparent;
+                border-left: 200px solid transparent;
+                border-right: 200px solid transparent;
             }
         }
 
@@ -115,6 +115,7 @@
             width: 100%;
             height: 100%;
             z-index: 2;
+            overflow: hidden;
         }
 
         .sides::before {
@@ -124,9 +125,9 @@
             bottom: 0;
             width: 0;
             height: 0;
-            border-left: 160px solid var(--envelope-color);
-            border-top: 140px solid transparent;
-            border-bottom: 140px solid transparent;
+            border-left: 150px solid var(--envelope-color);
+            border-top: 120px solid transparent;
+            border-bottom: 120px solid transparent;
         }
 
         .sides::after {
@@ -136,12 +137,12 @@
             bottom: 0;
             width: 0;
             height: 0;
-            border-right: 160px solid var(--envelope-color);
-            border-top: 140px solid transparent;
-            border-bottom: 140px solid transparent;
+            border-right: 150px solid var(--envelope-color);
+            border-top: 120px solid transparent;
+            border-bottom: 120px solid transparent;
         }
 
-        /* La Carta (Modificada para scroll interno perfecto) */
+        /* La Carta - Estado inicial oculta en el sobre */
         .letter {
             position: absolute;
             bottom: 5px;
@@ -149,23 +150,22 @@
             width: 94%;
             height: 90%;
             background-color: var(--letter-bg);
-            padding: 25px 20px;
-            border-radius: 8px;
+            padding: 22px 20px;
+            border-radius: 12px;
             z-index: 1;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s, z-index 0s 0.3s, height 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, z-index 0s 0.3s, height 0.6s cubic-bezier(0.4, 0, 0.2, 1), top 0.6s ease;
             box-shadow: 0 0 15px rgba(0,0,0,0.15);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            overflow-y: hidden; /* Desactivado el scroll para forzar vista completa */
         }
 
         /* Texto de la instrucción */
         .instruction {
             position: absolute;
-            bottom: -60px;
+            bottom: -50px;
             width: 100%;
             text-align: center;
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -173,7 +173,12 @@
             pointer-events: none;
         }
 
-        /* --- CAMBIOS CUANDO EL SOBRE SE ABRE --- */
+        /* --- ESTADO ABIERTO INTERACTIVO --- */
+        .container.shifted {
+            /* Desplazamos el sobre hacia la parte inferior de la pantalla */
+            transform: translateY(22vh);
+        }
+
         .envelope-wrapper.open {
             cursor: default;
         }
@@ -183,23 +188,24 @@
             z-index: 0;
         }
 
+        /* La carta crece masivamente hacia arriba para mostrarse por completo en pantalla */
         .envelope-wrapper.open .letter {
             z-index: 4;
-            transform: translateY(-150px);
-            height: 420px; /* Tamaño ampliado para leer cómodamente */
-            max-height: 70vh; /* Evita que se salga en pantallas pequeñas */
+            transform: translateY(-24vh); /* Saca la carta con fluidez vertical */
+            height: 72vh; /* Ocupa de forma estable casi todo el alto de la pantalla del móvil */
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            overflow-y: auto; /* Margen de seguridad extremo por si la pantalla es enana */
         }
 
         .envelope-wrapper.open .instruction {
             opacity: 0;
         }
 
-        /* Tipografías y Contenido de la Carta */
+        /* Tipografías y Contenido de la Carta ajustados */
         .letter h2 {
-            font-size: 18px;
+            font-size: 17px;
             color: #0f172a;
-            margin: 0 0 15px 0;
+            margin: 0 0 16px 0;
             border-bottom: 2px solid #cbd5e1;
             padding-bottom: 8px;
             text-transform: uppercase;
@@ -208,10 +214,10 @@
         }
 
         .letter p {
-            font-size: 14px;
+            font-size: 13.5px;
             line-height: 1.6;
             color: var(--text-color);
-            margin: 0 0 14px 0;
+            margin: 0 0 12px 0;
             text-align: left;
         }
 
@@ -221,31 +227,19 @@
         }
 
         .letter .signature {
-            margin-top: 25px;
-            padding-top: 10px;
+            margin-top: 22px;
+            padding-top: 5px;
             text-align: right;
             font-weight: bold;
             font-style: italic;
-            font-size: 15px;
+            font-size: 14px;
             color: #0f172a;
-        }
-
-        /* Barra de scroll personalizada más fina para que no moleste */
-        .letter::-webkit-scrollbar {
-            width: 5px;
-        }
-        .letter::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .letter::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="mainContainer">
         <div class="envelope-wrapper" id="envelopeWrapper">
             <div class="envelope">
                 <div class="sides"></div>
@@ -266,12 +260,14 @@
 
     <script>
         const wrapper = document.getElementById('envelopeWrapper');
+        const container = document.getElementById('mainContainer');
+        
         wrapper.addEventListener('click', (e) => {
-            // Permite hacer scroll en el texto una vez abierto sin cerrar la carta
             if (wrapper.classList.contains('open') && e.target.closest('.letter')) {
                 return;
             }
             wrapper.classList.toggle('open');
+            container.classList.toggle('shifted'); // Mueve el sobre hacia abajo al abrirse
         });
     </script>
 </body>
