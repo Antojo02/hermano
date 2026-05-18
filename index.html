@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi hermano, el puto amo</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --envelope-color: #1e293b;
+            --envelope-inside: #334155;
+            --letter-bg: #f8fafc;
+            --text-color: #1e293b;
+            --accent-color: #e2e8f0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Contenedor del sobre */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: var(--envelope-inside);
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+        }
+
+        .envelope-wrapper:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Cuerpo del sobre (partes delantera y trasera) */
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Solapa superior */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            z-index: 3;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--envelope-color);
+            transform-origin: top;
+            transition: transform 0.4s ease-in-out 0.2s;
+        }
+
+        /* Laterales y fondo del sobre */
+        .envelope::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid var(--envelope-color);
+        }
+
+        .envelope .sides {
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+            border-left: 150px solid var(--envelope-color);
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-top: 100px solid transparent;
+        }
+
+        .envelope .sides::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            right: -150px;
+            z-index: 2;
+            border-right: 150px solid var(--envelope-color);
+            border-left: 150px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-top: 100px solid transparent;
+        }
+
+        /* La Carta */
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            right: 10px;
+            height: 85%;
+            background-color: var(--letter-bg);
+            padding: 20px;
+            border-radius: 4px;
+            box-sizing: border-box;
+            z-index: 1;
+            transition: transform 0.6s ease-in-out, z-index 0s 0.3s;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        /* Texto de fuera del sobre */
+        .instruction {
+            position: absolute;
+            bottom: -50px;
+            width: 100%;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: opacity 0.3s;
+        }
+
+        /* --- ESTADO ABIERTO (Cuando se hace clic) --- */
+        .envelope-wrapper.open::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .envelope-wrapper.open .letter {
+            transform: translateY(-120px) scale(1.1);
+            z-index: 4;
+            height: 380px;
+            width: 320px;
+            left: -10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .envelope-wrapper.open .instruction {
+            opacity: 0;
+        }
+
+        /* Estilos del texto de la carta */
+        .letter h2 {
+            font-size: 16px;
+            color: #0f172a;
+            margin-top: 0;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .letter p {
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text-color);
+            margin: 10px 0;
+        }
+
+        .letter strong {
+            color: #dc2626; /* Un toque rojo potente para las frases clave */
+        }
+
+        .letter .signature {
+            margin-top: 15px;
+            text-align: right;
+            font-weight: bold;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="envelope">
+            <div class="sides"></div>
+            <div class="letter">
+                <h2>Para el rey de la pista</h2>
+                <p>Hermano,</p>
+                <p>Te escribo esto porque a veces el día a día va muy rápido y no nos sentamos a decirnos las cosas importantes. Sé que los regalos que acompañan esto son humildes, pero de verdad espero que aceptes lo más valioso que hay en ellos: <strong>mi admiración absoluta por ti.</strong></p>
+                <p>Hace unos meses las cosas se pusieron muy jodidas. Verte pasar por esa ruptura, ver lo mal que lo estabas pasando y ver cómo el peso (esos 120 kg que te tenían estancado) te estaba pasando factura, me dolía mucho. Estabas abajo, hermano, y lo sé.</p>
+                <p>Pero lo que has hecho después... no tengo palabras. A tus 28 años has demostrado tener una fuerza mental que muy poca gente tiene. Te levantaste del suelo, te pusiste a currar en ti mismo y <strong>¡has bajado casi 20 kilos!</strong></p>
+                <p>Eso no es solo un cambio físico, es un golpe sobre la mesa. Has demostrado que cuando la vida te golpea, tú golpeas más fuerte. <strong>Eres una puta máquina</strong>, en serio. Estoy profundamente orgulloso de ser tu hermano. Ver tu disciplina y tu constancia me inspira un montón.</p>
+                <p>Disfruta de los detalles. Te los doy con todo mi cariño y con el respeto más grande que un hermano te puede tener.</p>
+                <div class="signature">Sigue volando alto, máquina. Te quiero.</div>
+            </div>
+        </div>
+        <div class="instruction">Haz clic para abrir ✉️</div>
+    </div>
+
+    <script>
+        const wrapper = document.getElementById('envelopeWrapper');
+        wrapper.addEventListener('click', () => {
+            wrapper.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
