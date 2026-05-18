@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para mi hermano, el puto amo</title>
     <style>
         :root {
@@ -11,205 +11,268 @@
             --envelope-inside: #334155;
             --letter-bg: #f8fafc;
             --text-color: #1e293b;
-            --accent-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
             padding: 0;
+            width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: var(--bg-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
+            perspective: 1000px;
         }
 
-        /* Contenedor del sobre */
+        /* Contenedor principal centrado absoluto */
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            height: 240px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.4s ease;
+        }
+
+        /* El sobre */
         .envelope-wrapper {
             position: relative;
-            width: 300px;
-            height: 200px;
+            width: 100%;
+            height: 100%;
             background-color: var(--envelope-inside);
             cursor: pointer;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transition: transform 0.3s;
-            margin-top: 50px; /* Espacio arriba para cuando suba la carta */
+            box-shadow: 0 15px 35px var(--shadow-color);
+            transition: transform 0.4s ease;
         }
 
         .envelope-wrapper:hover {
             transform: translateY(-5px);
         }
 
-        /* Cuerpo del sobre */
         .envelope {
             position: relative;
             width: 100%;
             height: 100%;
         }
 
-        /* Solapa superior */
+        /* Solapa superior adaptada */
         .envelope::before {
             content: '';
             position: absolute;
             top: 0;
-            z-index: 3;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid var(--envelope-color);
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 45vw solid transparent;
+            border-right: 45vw solid transparent;
+            border-top: 120px solid var(--envelope-color);
             transform-origin: top;
-            transition: transform 0.4s ease-in-out 0.2s;
+            transition: transform 0.4s ease-in-out 0.15s, z-index 0s 0.35s;
+            z-index: 3;
+        }
+        @media (min-width: 440px) {
+            .envelope::before {
+                border-left: 200px solid transparent;
+                border-right: 200px solid transparent;
+            }
         }
 
-        /* Laterales y fondo del sobre */
+        /* Fondo y solapa inferior del sobre */
         .envelope::after {
             content: '';
             position: absolute;
             bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 45vw solid transparent;
+            border-right: 45vw solid transparent;
+            border-bottom: 120px solid var(--envelope-color);
             z-index: 2;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 100px solid var(--envelope-color);
+        }
+        @media (min-width: 440px) {
+            .envelope::after {
+                border-left: 200px solid transparent;
+                border-right: 200px solid transparent;
+            }
         }
 
-        .envelope .sides {
+        /* Laterales del sobre ajustados a porcentaje */
+        .sides {
             position: absolute;
             bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 2;
-            border-left: 150px solid var(--envelope-color);
-            border-right: 150px solid transparent;
-            border-bottom: 100px solid transparent;
-            border-top: 100px solid transparent;
+            overflow: hidden;
         }
 
-        .envelope .sides::after {
+        .sides::before {
             content: '';
             position: absolute;
-            bottom: -100px;
-            right: -150px;
-            z-index: 2;
-            border-right: 150px solid var(--envelope-color);
-            border-left: 150px solid transparent;
-            border-bottom: 100px solid transparent;
-            border-top: 100px solid transparent;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid var(--envelope-color);
+            border-top: 120px solid transparent;
+            border-bottom: 120px solid transparent;
         }
 
-        /* La Carta */
+        .sides::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-right: 150px solid var(--envelope-color);
+            border-top: 120px solid transparent;
+            border-bottom: 120px solid transparent;
+        }
+
+        /* La Carta - Ahora crece equilibrada hacia el centro */
         .letter {
             position: absolute;
-            bottom: 0;
-            left: 10px;
-            right: 10px;
-            height: 85%;
+            bottom: 5px;
+            left: 3%;
+            width: 94%;
+            height: 90%;
             background-color: var(--letter-bg);
-            padding: 20px;
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 20px 18px;
+            border-radius: 8px;
             z-index: 1;
-            transition: transform 0.6s ease-in-out, z-index 0s 0.3s;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, z-index 0s 0.25s, height 0.5s ease;
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Texto de fuera del sobre */
+        /* Texto de la instrucción */
         .instruction {
             position: absolute;
             bottom: -50px;
             width: 100%;
             text-align: center;
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
-        /* --- ESTADO ABIERTO (Al hacer clic, la carta SUBE hacia arriba) --- */
+        /* --- ESTADO ABIERTO (CORREGIDO PARA CENTRADO PERFECTO) --- */
+        .envelope-wrapper.open {
+            cursor: default;
+        }
+
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 0;
         }
 
+        /* Centramos la carta moviendo el contenedor ligeramente hacia abajo y elevando la carta de forma controlada */
         .envelope-wrapper.open .letter {
-            transform: translateY(-180px) scale(1.1); /* Sube hacia arriba con fuerza */
             z-index: 4;
-            height: 380px;
-            width: 320px;
-            left: -10px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: translateY(20px); /* Subida rebajada para que no se salga por arriba */
+            height: 380px; 
+            max-height: 75vh; /* Se adapta a la altura del móvil perfectamente */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
         .envelope-wrapper.open .instruction {
             opacity: 0;
         }
 
-        /* Estilos del texto de la carta */
+        /* Tipografías y Contenido de la Carta */
         .letter h2 {
             font-size: 16px;
             color: #0f172a;
-            margin-top: 0;
+            margin: 0 0 12px 0;
             border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 5px;
+            padding-bottom: 6px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
         }
 
         .letter p {
-            font-size: 13px;
-            line-height: 1.6;
+            font-size: 13.5px;
+            line-height: 1.55;
             color: var(--text-color);
-            margin: 12px 0;
+            margin: 0 0 12px 0;
+            text-align: left;
         }
 
         .letter strong {
-            color: #dc2626; /* Toque rojo para lo importante */
+            color: #dc2626;
+            font-weight: 700;
         }
 
         .letter .signature {
             margin-top: 20px;
+            padding-top: 5px;
             text-align: right;
             font-weight: bold;
             font-style: italic;
+            font-size: 14px;
             color: #0f172a;
+        }
+
+        /* Barra de scroll fina */
+        .letter::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .letter::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Música de fondo (See You Again - Fast & Furious) -->
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="envelope-wrapper" id="envelopeWrapper">
-        <div class="envelope">
-            <div class="sides"></div>
-            <div class="letter">
-                <h2>Para el rey de la pista</h2>
-                <p>Hermano,</p>
-                <p>Te escribo esto porque a veces el día a día va muy rápido y no nos sentamos a decirnos las cosas importantes. Sé que los regalos que acompañan esto son humildes, pero de verdad espero que aceptes lo más valioso que hay en ellos: <strong>mi admiración absoluta por ti.</strong></p>
-                <p>Hace unos meses las cosas se pusieron muy jodidas. Verte pasar por esa ruptura, ver lo mal que lo estabas pasando y ver cómo el peso (esos 120 kg que te tenían estancado) te estaba pasando factura, me dolía mucho. Estabas abajo, hermano, y lo sé.</p>
-                <p>Pero lo que has hecho después... no tengo palabras. A tus 28 años has demostrado tener una fuerza mental que muy poca gente tiene. Te levantaste del suelo, te profesaste respeto, te pusiste a currar en ti mismo y <strong>¡has bajado casi 20 kilos!</strong></p>
-                <p>Eso no es solo un cambio físico, es un golpe sobre la mesa. Has demostrado que cuando la vida te golpea, tú golpeas más fuerte. <strong>Eres una puta máquina</strong>, en serio. Estoy profundamente orgulloso de ser tu hermano. Ver tu disciplina y tu constancia me inspira un montón.</p>
-                <p>Disfruta de los detalles. Te los doy con todo mi cariño y con el respeto más grande que un hermano te puede tener.</p>
-                <div class="signature">Sigue volando alto, máquina. Te quiero.</div>
+    <div class="container">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope">
+                <div class="sides"></div>
+                <div class="letter">
+                    <h2>Para el rey de la pista</h2>
+                    <p>Hermano,</p>
+                    <p>Te escribo esto porque a veces el día a día va muy rápido y no nos sentamos a decirnos las cosas importantes. Sé que los regalos que acompañan esto son humildes, pero de verdad espero que aceptes lo más valioso que hay en ellos: <strong>mi admiración absoluta por ti.</strong></p>
+                    <p>Hace unos meses las cosas se pusieron muy jodidas. Verte pasar por esa ruptura, ver lo mal que lo estabas pasando y ver cómo el peso (esos 120 kg que te tenían estancado) te estaba pasando factura, me dolía mucho. Estabas abajo, hermano, y lo sé.</p>
+                    <p>Pero lo que has hecho después... no tengo palabras. A tus 28 años has demostrado tener una fuerza mental que muy poca gente tiene. Te levantaste del suelo, te pusiste a currar en ti mismo y <strong>¡has bajado casi 20 kilos!</strong></p>
+                    <p>Eso no es solo un cambio físico, es un golpe sobre la mesa. Has demostrado que cuando la vida te golpea, tú golpeas más fuerte. <strong>Eres una puta máquina</strong>, en serio. Estoy profundamente orgulloso de ser tu hermano. Ver tu disciplina y tu constancia me inspira un montón.</p>
+                    <p>Disfruta de los detalles. Te los doy con todo mi cariño y con el respeto más grande que un hermano te puede tener.</p>
+                    <div class="signature">Sigue volando alto, máquina. Te quiero.</div>
+                </div>
             </div>
+            <div class="instruction">Haz clic para abrir ✉️</div>
         </div>
-        <div class="instruction">Haz clic para abrir con música ✉️🎵</div>
     </div>
 
     <script>
         const wrapper = document.getElementById('envelopeWrapper');
-        const music = document.getElementById('bgMusic');
-
-        wrapper.addEventListener('click', () => {
-            wrapper.classList.toggle('open');
-            
-            if(wrapper.classList.contains('open')) {
-                music.play().catch(error => console.log("Audio bloqueado temporalmente:", error));
-            } else {
-                music.pause();
+        wrapper.addEventListener('click', (e) => {
+            if (wrapper.classList.contains('open') && e.target.closest('.letter')) {
+                return;
             }
+            wrapper.classList.toggle('open');
         });
     </script>
 </body>
