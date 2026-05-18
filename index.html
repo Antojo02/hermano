@@ -35,13 +35,14 @@
             cursor: pointer;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             transition: transform 0.3s;
+            margin-top: 50px; /* Espacio arriba para cuando suba la carta */
         }
 
         .envelope-wrapper:hover {
             transform: translateY(-5px);
         }
 
-        /* Cuerpo del sobre (partes delantera y trasera) */
+        /* Cuerpo del sobre */
         .envelope {
             position: relative;
             width: 100%;
@@ -124,14 +125,14 @@
             transition: opacity 0.3s;
         }
 
-        /* --- ESTADO ABIERTO (Cuando se hace clic) --- */
+        /* --- ESTADO ABIERTO (Al hacer clic, la carta SUBE hacia arriba) --- */
         .envelope-wrapper.open::before {
             transform: rotateX(180deg);
             z-index: 0;
         }
 
         .envelope-wrapper.open .letter {
-            transform: translateY(20px) scale(1.1);
+            transform: translateY(-180px) scale(1.1); /* Sube hacia arriba con fuerza */
             z-index: 4;
             height: 380px;
             width: 320px;
@@ -154,25 +155,31 @@
         }
 
         .letter p {
-            font-size: 12px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.6;
             color: var(--text-color);
-            margin: 10px 0;
+            margin: 12px 0;
         }
 
         .letter strong {
-            color: #dc2626; /* Un toque rojo potente para las frases clave */
+            color: #dc2626; /* Toque rojo para lo importante */
         }
 
         .letter .signature {
-            margin-top: 15px;
+            margin-top: 20px;
             text-align: right;
             font-weight: bold;
             font-style: italic;
+            color: #0f172a;
         }
     </style>
 </head>
 <body>
+
+    <!-- Música de fondo (See You Again - Fast & Furious) -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="envelope-wrapper" id="envelopeWrapper">
         <div class="envelope">
@@ -182,19 +189,27 @@
                 <p>Hermano,</p>
                 <p>Te escribo esto porque a veces el día a día va muy rápido y no nos sentamos a decirnos las cosas importantes. Sé que los regalos que acompañan esto son humildes, pero de verdad espero que aceptes lo más valioso que hay en ellos: <strong>mi admiración absoluta por ti.</strong></p>
                 <p>Hace unos meses las cosas se pusieron muy jodidas. Verte pasar por esa ruptura, ver lo mal que lo estabas pasando y ver cómo el peso (esos 120 kg que te tenían estancado) te estaba pasando factura, me dolía mucho. Estabas abajo, hermano, y lo sé.</p>
-                <p>Pero lo que has hecho después... no tengo palabras. A tus 28 años has demostrado tener una fuerza mental que muy poca gente tiene. Te levantaste del suelo, te pusiste a currar en ti mismo y <strong>¡has bajado casi 20 kilos!</strong></p>
+                <p>Pero lo que has hecho después... no tengo palabras. A tus 28 años has demostrado tener una fuerza mental que muy poca gente tiene. Te levantaste del suelo, te profesaste respeto, te pusiste a currar en ti mismo y <strong>¡has bajado casi 20 kilos!</strong></p>
                 <p>Eso no es solo un cambio físico, es un golpe sobre la mesa. Has demostrado que cuando la vida te golpea, tú golpeas más fuerte. <strong>Eres una puta máquina</strong>, en serio. Estoy profundamente orgulloso de ser tu hermano. Ver tu disciplina y tu constancia me inspira un montón.</p>
                 <p>Disfruta de los detalles. Te los doy con todo mi cariño y con el respeto más grande que un hermano te puede tener.</p>
                 <div class="signature">Sigue volando alto, máquina. Te quiero.</div>
             </div>
         </div>
-        <div class="instruction">Haz clic para abrir ✉️</div>
+        <div class="instruction">Haz clic para abrir con música ✉️🎵</div>
     </div>
 
     <script>
         const wrapper = document.getElementById('envelopeWrapper');
+        const music = document.getElementById('bgMusic');
+
         wrapper.addEventListener('click', () => {
             wrapper.classList.toggle('open');
+            
+            if(wrapper.classList.contains('open')) {
+                music.play().catch(error => console.log("Audio bloqueado temporalmente:", error));
+            } else {
+                music.pause();
+            }
         });
     </script>
 </body>
